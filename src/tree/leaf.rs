@@ -1,3 +1,6 @@
+#[derive(Copy, Clone,PartialEq,Debug)]
 struct Leaf<T> {
-    val: T
+    pub val: T,
 }
+
+
