@@ -1,14 +1,17 @@
 struct Node<T> {
     pub operator: fn(left:T, right:T) -> T,
-    pub left:Option<Node<T>>,
-    pub right:Option<Node<T>>,
+    pub left:Option<Box<Node<T>>>,
+    pub right:Option<Box<Node<T>>>
 }
 
-impl<T> Building_<T> {
+impl<T> Node<T> {
 
     fn insert () -> () {}
 
-    fn insert_left () -> () {}
+    fn insert_left (self, val : Node<T>) -> Self {
+        let new_node = Node::new(val);
+        self
+    }
 
     fn insert_right () -> () {}
 
