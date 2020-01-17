@@ -1,24 +1,32 @@
 #[derive(Clone)]
 struct Node<T> where T: Clone{
-    pub val: Option<T>,
+    pub val: T,
     pub operator: fn(left:T, right:T) -> T,
-    pub left:Option<Box<Node<T>>>,
-    pub right:Option<Box<Node<T>>>,
+    left: Option<Box<Node<T>>>,
+    right: Option<Box<Node<T>>>,
 }
 
+impl<T> Node<T> where T:Clone {
 
-impl<T> Node<T> where T:Clone{
+    pub fn insert_left (&mut self, node: Node<T>) -> &mut Self {
+        self.left = Some(Box::new(node));
+        self
+    }
 
-    fn insert () -> () {}
+    pub fn insert_right (&mut self, node: Node<T>) -> &mut Self {
+        self.right = Some(Box::new(node));
+        self
+    }
 
-    fn insert_left () -> () {}
+    pub fn eval(mut self)->T {
+        match (self.left, self.right) {
+            (Some(left_box), Some(right_box)) => self.eval(),
+            (_,_) => self.val
 
-    fn insert_right () -> () {}
+        }
+    }
 
-    fn find () -> () {}
-
-    fn operation () -> () {}
-
+    pub fn find () -> () {}
 }
 
 
