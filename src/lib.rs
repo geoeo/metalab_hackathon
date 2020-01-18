@@ -16,7 +16,7 @@ use crossterm::{
     cursor,
 };
 
-pub fn run<W>(output: &mut W, level: &Level) -> Result<()> where W: Write{
+pub fn run<W>(output: &mut W, level: &mut Level) -> Result<()> where W: Write{
     let mut running = State::Running;
     let mut cursor_pos = Position::new();
     execute!(output, terminal::EnterAlternateScreen)?;
@@ -33,11 +33,13 @@ pub fn run<W>(output: &mut W, level: &Level) -> Result<()> where W: Write{
                 let read = read()?;
                 let (new_state, input_command_new) = systems::parse_input_event(&read);
                 running = new_state;
-                let move_command = systems::process_input(&input_command_new);
-                let delta_move = systems::simple_command(&move_command, 1);
 
+                let input_command = systems::process_input(&input_command_new);
+                let delta_move = systems::simple_move(&input_command, 1);
 
                 cursor_pos = Position::apply_delta(&cursor_pos, delta_move.0, delta_move.1, level.width, level.height);
+                systems::modify_level(level, &cursor_pos, input_command);
+
                 Level::draw(output,level);
                 queue!(output,cursor::MoveTo(cursor_pos.x_pos, cursor_pos.y_pos))?;
             }

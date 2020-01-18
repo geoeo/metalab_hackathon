@@ -4,11 +4,14 @@ pub type Move = (i16, i16);
 
 #[repr(u8)]
 #[derive(Debug,Copy,Clone)]
-pub enum MoveCommand {
+pub enum Command {
     Left,
     Right,
     Up,
     Down,
+    PlaceAdd,
+    PlaceSubtract,
+    PlaceMultiplication,
     None
 }
 
