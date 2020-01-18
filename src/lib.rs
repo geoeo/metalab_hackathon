@@ -1,5 +1,10 @@
+pub mod tree;
+pub mod model;
+pub mod map;
+
 use crate::tree::leaf;
 use crate::model::{state::State, input_command::InputCommand};
+use crate::map::Level;
 use std::io::Write;
 use std::time::Duration;
 use crossterm::{
@@ -9,11 +14,6 @@ use crossterm::{
     Result,
     cursor,
 };
-
-
-
-pub mod tree;
-pub mod model;
 
 pub fn parse_input_event(event: &Event) -> (State, InputCommand) {
 
@@ -29,7 +29,7 @@ pub fn parse_input_event(event: &Event) -> (State, InputCommand) {
 
 }
 
-pub fn run<W>(output: &mut W) -> Result<()> where W: Write{
+pub fn run<W>(output: &mut W, level: &Level) -> Result<()> where W: Write{
     let mut running = State::Running;
     execute!(output, terminal::EnterAlternateScreen)?;
     enable_raw_mode()?;
@@ -47,6 +47,8 @@ pub fn run<W>(output: &mut W) -> Result<()> where W: Write{
                 let read = read()?;
                 let (new_state, input_command_new) = parse_input_event(&read);
                 running = new_state;
+                //TODO: draw map
+                Level::draw(output,level);
                 queue!(output, style::Print("running"), cursor::MoveToNextLine(1))?;
             }
 
