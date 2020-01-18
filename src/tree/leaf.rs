@@ -20,7 +20,7 @@ impl<T> Node<T> where T:Clone {
 
     pub fn eval(mut self)->T {
         match (self.left, self.right) {
-            (Some(left_box), Some(right_box)) => self.eval(),
+            (Some(left_box), Some(right_box)) => (self.operator)(left_box.eval(),right_box.eval()),
             (_,_) => self.val
 
         }
