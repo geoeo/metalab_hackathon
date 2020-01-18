@@ -50,7 +50,7 @@ impl Level {
 
         queue!(
             output,
-            cursor::MoveTo(0,level.height as u16 + 2)
+            cursor::MoveTo(0,level.height as u16 + 1)
     )
 
 

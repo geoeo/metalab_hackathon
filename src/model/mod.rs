@@ -1,4 +1,4 @@
-pub mod input_command;
+pub mod commands;
 pub mod state;
 
 pub const ERROR_ICON: char = 'E';
