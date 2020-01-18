@@ -1,35 +1,19 @@
 use crate::tree::leaf;
+use crate::model::{state::State, input_command::InputCommand};
 use std::io::Write;
 use std::time::Duration;
 use crossterm::{
-    event::{poll, read},
+    event::{poll, Event, KeyEvent, KeyCode,KeyModifiers, read},
     execute, queue, style,
     terminal::{self, disable_raw_mode, enable_raw_mode, ClearType},
     Result,
     cursor,
 };
 
+
+
 pub mod tree;
-pub mod map;
-
-
-use crossterm::{
-    event::{Event, KeyCode, KeyEvent, KeyModifiers}
-};
-
-#[derive(Debug,Copy,Clone)]
-pub struct InputCommand {
-    pub valid: bool,
-    pub key_event: KeyEvent
-}
-
-#[repr(u8)]
-#[derive(Copy,Clone,PartialEq)]
-pub enum State {
-    Running,
-    Pause,
-    Quit,
-}
+pub mod model;
 
 pub fn parse_input_event(event: &Event) -> (State, InputCommand) {
 
