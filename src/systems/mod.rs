@@ -1,8 +1,6 @@
 use crossterm::event::{Event, KeyCode, KeyEvent, KeyModifiers};
-use crate::model::{commands::InputCommand, commands::Command, state::{State, Position}, commands::Move, EMPTY_ICON};
-use crate::map::Level;
-
-
+use crate::model::{commands::InputCommand, commands::Command, state::{State, Position}, commands::Move, EMPTY_ICON, ADD_ICON, SUBTRACT_ICON, MULT_ICON};
+use crate::map::Grid;
 
 pub fn simple_move(move_command: &Command, multiplier: i16) -> Move {
     match move_command {
@@ -49,31 +47,32 @@ pub fn process_input(input_command: &InputCommand) -> Command {
     }
 }
 
-pub fn modify_level(level: &mut Level,cursor_position: &Position, command: Command) -> () {
+pub fn modify_level(level: &mut Grid, cursor_position: &Position, command: Command) -> () {
 
     let current_char = match level.map.get(cursor_position.y_pos as usize,cursor_position.x_pos as usize) {
         Some(tile) => tile.icon,
         None => EMPTY_ICON
     };
 
+
     let new_char = match command {
         Command::PlaceAdd => {
-            if current_char == EMPTY_ICON {
-                'A'
+            if current_char != ADD_ICON {
+                ADD_ICON
             } else {
                 EMPTY_ICON
             }
         },
         Command::PlaceSubtract => {
-            if current_char == EMPTY_ICON {
-                'S'
+            if current_char != SUBTRACT_ICON {
+                SUBTRACT_ICON
             } else {
                 EMPTY_ICON
             }
         },
         Command::PlaceMultiplication => {
-            if current_char == EMPTY_ICON {
-                'M'
+            if current_char != MULT_ICON {
+                MULT_ICON
             } else {
                 EMPTY_ICON
             }

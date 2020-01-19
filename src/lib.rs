@@ -5,7 +5,7 @@ pub mod systems;
 
 use crate::tree::leaf;
 use crate::model::{state::{State,Position}, commands::InputCommand};
-use crate::map::Level;
+use crate::map::Grid;
 use std::io::Write;
 use std::time::Duration;
 use crossterm::{
@@ -16,7 +16,7 @@ use crossterm::{
     cursor,
 };
 
-pub fn run<W>(output: &mut W, level: &mut Level) -> Result<()> where W: Write{
+pub fn run<W>(output: &mut W, level: &mut Grid) -> Result<()> where W: Write{
     let mut running = State::Running;
     let mut cursor_pos = Position::new();
     execute!(output, terminal::EnterAlternateScreen)?;
@@ -40,12 +40,12 @@ pub fn run<W>(output: &mut W, level: &mut Level) -> Result<()> where W: Write{
                 cursor_pos = Position::apply_delta(&cursor_pos, delta_move.0, delta_move.1, level.width, level.height);
                 systems::modify_level(level, &cursor_pos, input_command);
 
-                Level::draw(output,level);
+                Grid::draw(output, level);
                 queue!(output,cursor::MoveTo(cursor_pos.x_pos, cursor_pos.y_pos))?;
             }
 
             Ok(false) => {
-                Level::draw(output,level);
+                Grid::draw(output, level);
                 queue!(output,cursor::MoveTo(cursor_pos.x_pos, cursor_pos.y_pos))?;
             }
 

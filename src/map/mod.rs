@@ -7,23 +7,24 @@ use crossterm::{queue,Result, cursor, style};
 use crate::model::ERROR_ICON;
 
 #[derive(Debug,Clone)]
-pub struct Level {
+pub struct Grid {
     pub width : u16,
     pub height: u16,
     pub map: Array2D<Tile>
 }
 
-impl Level {
-    pub fn new(width: u16, height: u16) -> Level {
-        Level{
+impl Grid {
+    pub fn new(width: u16, height: u16) -> Grid {
+        Grid {
             width: width,
             height: height,
             map: Array2D::filled_with(Tile::new(),height as usize,width as usize)
         }
 
     }
-    pub fn draw<W>(output: &mut W, level: &Level) -> Result<()> where W:Write {
+    pub fn draw<W>(output: &mut W, level: &Grid) -> Result<()> where W:Write {
 
+        //change this if we use a border around the grid, maybe this should be part of the Grid data structure
         let x_offset = 0;
         let y_offset = 0;
 
@@ -50,7 +51,7 @@ impl Level {
 
         queue!(
             output,
-            cursor::MoveTo(0,level.height as u16 + 1)
+            cursor::MoveTo(0,level.height as u16 + y_offset + 1)
     )
 
 
